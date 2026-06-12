@@ -1,0 +1,32 @@
+[Unit]
+Description=皮皮剧本工坊 - Gunicorn 服务
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/pipi-script-studio
+Environment="PATH=/opt/pipi-script-studio/venv/bin"
+EnvironmentFile=/opt/pipi-script-studio/.env
+ExecStart=/opt/pipi-script-studio/venv/bin/gunicorn \
+    --workers 3 \
+    --bind 127.0.0.1:8000 \
+    --timeout 120 \
+    --access-logfile /var/log/pipi-studio/access.log \
+    --error-logfile /var/log/pipi-studio/error.log \
+    --log-level info \
+    wsgi:app
+
+Restart=always
+RestartSec=10
+
+# 安全加固
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/opt/pipi-script-studio/data.db
+ReadOnlyPaths=/opt/pipi-script-studio/.env
+
+[Install]
+WantedBy=multi-user.target
