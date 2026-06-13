@@ -9,181 +9,185 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #f5f0eb;
-            color: #2d2d2d;
+            background: #f3f2ef;
+            color: #1a1a2e;
             min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
         }
         .navbar {
-            background: linear-gradient(135deg, #2d5a27, #3a7d32);
-            padding: 16px 32px;
-            display: flex; align-items: center; gap: 16px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+            background: #1b4332;
+            padding: 18px 36px;
+            display: flex; align-items: center; gap: 14px;
+            box-shadow: 0 1px 0 rgba(255,255,255,0.08) inset, 0 4px 20px rgba(0,0,0,0.15);
         }
-        .navbar .logo { font-size: 28px; }
-        .navbar h1 { color: #fff; font-size: 22px; font-weight: 700; }
-        .navbar .subtitle { color: rgba(255,255,255,0.8); font-size: 13px; margin-left: auto; }
-        .container { max-width: 960px; margin: 0 auto; padding: 24px 20px 60px; }
+        .navbar .logo { font-size: 26px; }
+        .navbar h1 { color: #fff; font-size: 20px; font-weight: 600; letter-spacing: 1px; }
+        .navbar .subtitle { color: rgba(255,255,255,0.65); font-size: 12px; margin-left: auto; font-weight: 400; }
+        .container { max-width: 880px; margin: 0 auto; padding: 32px 20px 80px; }
 
-        /* Card 基础 */
+        /* Card */
         .card {
-            background: #fff; border-radius: 16px; padding: 28px;
-            box-shadow: 0 2px 16px rgba(0,0,0,0.06); margin-bottom: 20px;
+            background: #fff; border-radius: 20px; padding: 32px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
+            margin-bottom: 20px; border: 1px solid #e8e6e1;
         }
-        .card h2 { font-size: 18px; font-weight: 900; color: #2d5a27; margin-bottom: 16px; }
+        .card h2 { font-size: 16px; font-weight: 700; color: #1b4332; margin-bottom: 18px; letter-spacing: 0.3px; }
 
         /* 输入区 */
-        .input-row { display: flex; gap: 12px; }
+        .input-row { display: flex; gap: 10px; }
         .input-row input {
-            flex: 1; padding: 14px 18px; border: 2px solid #e0d8cf;
-            border-radius: 12px; font-size: 15px; font-family: inherit; outline: none;
-            transition: border-color 0.2s;
+            flex: 1; padding: 14px 18px; border: 1.5px solid #e0ded8;
+            border-radius: 14px; font-size: 15px; font-family: inherit; outline: none;
+            background: #fafaf8; transition: all 0.2s;
         }
-        .input-row input:focus { border-color: #3a7d32; }
-        .hint { font-size: 13px; color: #999; margin-bottom: 12px; }
-        .hint em { color: #3a7d32; font-style: normal; }
+        .input-row input:focus { border-color: #2d6a4f; background: #fff; box-shadow: 0 0 0 3px rgba(45,106,79,0.08); }
+        .hint { font-size: 12px; color: #a0a0a0; margin-bottom: 14px; }
+        .hint em { color: #2d6a4f; font-style: normal; font-weight: 600; }
 
         /* 按钮 */
         .btn {
-            padding: 14px 28px; border: none; border-radius: 12px;
-            font-size: 15px; font-weight: 700; font-family: inherit;
-            cursor: pointer; transition: all 0.15s; white-space: nowrap;
+            padding: 13px 26px; border: none; border-radius: 14px;
+            font-size: 14px; font-weight: 600; font-family: inherit;
+            cursor: pointer; transition: all 0.2s; white-space: nowrap; letter-spacing: 0.2px;
         }
         .btn:active { transform: scale(0.97); }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; filter: grayscale(0.5); }
         .btn-primary {
-            background: linear-gradient(135deg, #3a7d32, #4a9e3f); color: #fff;
-            box-shadow: 0 2px 8px rgba(58,125,50,0.25);
+            background: #1b4332; color: #fff;
+            box-shadow: 0 2px 8px rgba(27,67,50,0.2);
         }
-        .btn-primary:hover { box-shadow: 0 4px 16px rgba(58,125,50,0.35); }
+        .btn-primary:hover { background: #1f5c44; box-shadow: 0 4px 14px rgba(27,67,50,0.3); }
         .btn-outline {
-            background: #fff; color: #3a7d32; border: 2px solid #3a7d32;
+            background: #fff; color: #1b4332; border: 1.5px solid #c5d5cc;
         }
-        .btn-outline:hover { background: #f0f9ee; }
-        .btn-sm { padding: 8px 16px; font-size: 13px; border-radius: 8px; }
-        .btn-xs { padding: 5px 12px; font-size: 12px; border-radius: 6px; }
+        .btn-outline:hover { background: #f4f7f5; border-color: #1b4332; }
+        .btn-sm { padding: 7px 14px; font-size: 12px; border-radius: 10px; }
+        .btn-xs { padding: 5px 11px; font-size: 11px; border-radius: 8px; }
         .btn-gold {
-            background: linear-gradient(135deg, #f0a030, #f5c842); color: #5a3a1a;
-            border: none; box-shadow: 0 2px 8px rgba(240,160,48,0.25);
+            background: #f5a623; color: #fff; border: none;
+            box-shadow: 0 2px 8px rgba(245,166,35,0.2); font-weight: 700;
         }
-        .btn-gold:hover { box-shadow: 0 4px 16px rgba(240,160,48,0.4); }
+        .btn-gold:hover { background: #f7b733; box-shadow: 0 4px 16px rgba(245,166,35,0.35); }
 
         /* 加载 */
-        .loading { display: none; text-align: center; padding: 30px; color: #999; }
+        .loading { display: none; text-align: center; padding: 40px; color: #a0a0a0; }
         .loading.active { display: block; }
         .spinner {
-            width: 36px; height: 36px; border: 3px solid #e0d8cf;
-            border-top: 3px solid #3a7d32; border-radius: 50%;
-            animation: spin 0.8s linear infinite; margin: 0 auto 12px;
+            width: 32px; height: 32px; border: 2.5px solid #e8e6e1;
+            border-top: 2.5px solid #1b4332; border-radius: 50%;
+            animation: spin 0.7s linear infinite; margin: 0 auto 14px;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
         /* 灵感卡片 */
-        .ideas-grid { display: grid; gap: 10px; margin-top: 12px; }
+        .ideas-grid { display: grid; gap: 8px; margin-top: 14px; }
         .idea-card {
-            background: #fdfcf7; border: 1.5px solid #ece6da;
+            background: #fafaf8; border: 1px solid #e8e6e1;
             border-radius: 12px; padding: 14px 18px;
             display: flex; align-items: center; justify-content: space-between;
             gap: 12px; transition: all 0.2s;
         }
-        .idea-card:hover { border-color: #f0c75e; background: #fffbef; }
-        .idea-card .idea-text { flex: 1; font-size: 14px; line-height: 1.6; color: #333; }
+        .idea-card:hover { border-color: #d4c9a8; background: #fdfcf6; }
+        .idea-card .idea-text { flex: 1; font-size: 13px; line-height: 1.65; color: #333; }
         .idea-card .idea-actions { display: flex; gap: 6px; align-items: center; }
         .idea-card .type-badge {
-            font-size: 11px; padding: 2px 8px; border-radius: 10px;
-            font-weight: 500; white-space: nowrap;
+            font-size: 10px; padding: 3px 9px; border-radius: 20px;
+            font-weight: 600; white-space: nowrap; letter-spacing: 0.3px;
         }
-        .badge-edu { background: #e8f5e9; color: #2d5a27; }
-        .badge-fun { background: #fff3e0; color: #e65100; }
-        .badge-warm { background: #fce4ec; color: #c62828; }
-        .badge-creative { background: #e3f2fd; color: #1565c0; }
+        .badge-edu { background: #e8f0eb; color: #1b4332; }
+        .badge-fun { background: #fef3e4; color: #c26d1a; }
+        .badge-warm { background: #fde8ec; color: #b83a4a; }
+        .badge-creative { background: #e6eef6; color: #2c5282; }
 
         /* 剧集列表 */
-        .episode-list { margin-top: 8px; }
+        .episode-list { margin-top: 6px; }
         .episode-item {
             display: flex; align-items: center; justify-content: space-between;
             padding: 14px 18px; border-radius: 12px; margin-bottom: 6px;
-            border: 1px solid #ece6da; background: #fafaf7;
+            border: 1px solid #e8e6e1; background: #fafaf8;
             transition: all 0.15s; cursor: pointer; gap: 12px;
         }
-        .episode-item:hover { background: #f0f9ee; border-color: #c8e0c0; }
+        .episode-item:hover { background: #f4f7f5; border-color: #c5d5cc; }
         .episode-item .ep-num {
-            font-weight: 900; font-size: 18px; color: #2d5a27;
-            min-width: 48px; text-align: center;
+            font-weight: 700; font-size: 16px; color: #2d6a4f;
+            min-width: 44px; text-align: center;
         }
         .episode-item .ep-info { flex: 1; }
-        .episode-item .ep-title { font-weight: 700; font-size: 15px; color: #2d2d2d; }
-        .episode-item .ep-topic { font-size: 12px; color: #999; margin-top: 2px; }
+        .episode-item .ep-title { font-weight: 600; font-size: 14px; color: #1a1a2e; }
+        .episode-item .ep-topic { font-size: 12px; color: #aaa; margin-top: 2px; }
         .episode-item .ep-status {
-            font-size: 11px; padding: 2px 8px; border-radius: 8px; font-weight: 500;
+            font-size: 10px; padding: 3px 9px; border-radius: 20px; font-weight: 600; letter-spacing: 0.3px;
         }
-        .status-draft { background: #fff3e0; color: #e65100; }
-        .status-completed { background: #e8f5e9; color: #2d5a27; }
+        .status-draft { background: #fef3e4; color: #c26d1a; }
+        .status-completed { background: #e8f0eb; color: #1b4332; }
         .episode-item .ep-delete {
             color: #ccc; background: none; border: none; cursor: pointer;
-            font-size: 16px; padding: 4px 8px; border-radius: 6px; transition: 0.15s;
+            font-size: 15px; padding: 4px 8px; border-radius: 6px; transition: 0.15s;
         }
-        .episode-item .ep-delete:hover { color: #e53935; background: #ffebee; }
+        .episode-item .ep-delete:hover { color: #d14343; background: #fef0f0; }
         .episode-item .ep-edit {
-            color: #3a7d32; background: none; border: none; cursor: pointer;
-            font-size: 14px; padding: 4px 8px; border-radius: 6px; transition: 0.15s;
+            color: #2d6a4f; background: none; border: none; cursor: pointer;
+            font-size: 13px; padding: 4px 8px; border-radius: 6px; transition: 0.15s;
             text-decoration: none;
         }
-        .episode-item .ep-edit:hover { background: #e8f5e9; }
+        .episode-item .ep-edit:hover { background: #e8f0eb; }
 
         /* 分页 */
-        .pagination { display: flex; gap: 6px; justify-content: center; margin-top: 16px; align-items: center; }
+        .pagination { display: flex; gap: 5px; justify-content: center; margin-top: 18px; align-items: center; }
         .pagination button {
-            padding: 6px 14px; border: 1.5px solid #e0d8cf; background: #fff;
-            border-radius: 8px; cursor: pointer; font-family: inherit; font-size: 13px;
-            transition: all 0.15s;
+            padding: 6px 14px; border: 1px solid #e0ded8; background: #fff;
+            border-radius: 10px; cursor: pointer; font-family: inherit; font-size: 12px; font-weight: 500;
+            transition: all 0.15s; color: #555;
         }
-        .pagination button:hover { border-color: #3a7d32; }
-        .pagination button.active { background: #3a7d32; color: #fff; border-color: #3a7d32; }
-        .pagination button:disabled { opacity: 0.4; cursor: not-allowed; }
-        .pagination .page-info { font-size: 13px; color: #999; padding: 0 8px; }
+        .pagination button:hover { border-color: #2d6a4f; color: #2d6a4f; }
+        .pagination button.active { background: #2d6a4f; color: #fff; border-color: #2d6a4f; }
+        .pagination button:disabled { opacity: 0.35; cursor: not-allowed; }
+        .pagination .page-info { font-size: 12px; color: #aaa; padding: 0 6px; }
 
         /* 结果区 */
         .result-area { display: none; }
         .result-area.active { display: block; }
-        .toolbar { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+        .toolbar { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
         .section-card {
-            background: #fff; border-radius: 16px; padding: 24px;
-            box-shadow: 0 2px 16px rgba(0,0,0,0.06); margin-bottom: 16px; position: relative;
+            background: #fff; border-radius: 20px; padding: 28px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
+            margin-bottom: 14px; position: relative; border: 1px solid #e8e6e1;
         }
         .section-header {
             display: flex; align-items: center; justify-content: space-between;
-            margin-bottom: 16px; flex-wrap: wrap; gap: 10px;
+            margin-bottom: 18px; flex-wrap: wrap; gap: 10px;
         }
-        .section-title { font-weight: 900; font-size: 17px; }
+        .section-title { font-weight: 700; font-size: 15px; color: #1a1a2e; }
         .optimize-row { display: flex; gap: 8px; align-items: center; }
         .optimize-row input {
-            padding: 8px 12px; border: 1.5px solid #e0d8cf;
-            border-radius: 8px; font-size: 13px; font-family: inherit; width: 180px; outline: none;
+            padding: 7px 12px; border: 1.5px solid #e0ded8;
+            border-radius: 10px; font-size: 12px; font-family: inherit; width: 170px; outline: none;
+            background: #fafaf8; transition: all 0.2s;
         }
-        .optimize-row input:focus { border-color: #3a7d32; }
+        .optimize-row input:focus { border-color: #2d6a4f; background: #fff; }
 
         /* Markdown 内容 */
-        .content-body { line-height: 1.75; font-size: 14px; color: #333; }
-        .content-body h3 { font-size: 16px; font-weight: 700; color: #2d5a27; margin: 16px 0 8px; padding-bottom: 4px; border-bottom: 1px solid #f0e8dc; }
-        .content-body h4 { font-size: 14px; font-weight: 700; color: #555; margin: 12px 0 6px; }
-        .content-body strong { color: #2d5a27; }
-        .content-body p { margin: 6px 0; }
-        .scene-desc { background: #fefcf7; border-left: 3px solid #f0c75e; padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 8px 0; font-size: 13px; color: #5a4a3a; }
-        .storyboard-item { background: #fafaf7; border-radius: 10px; padding: 10px 14px; margin: 8px 0; border: 1px solid #ece6da; }
-        .video-prompt-box { background: #f7faf5; border: 1px solid #c8e0c0; border-radius: 10px; padding: 12px 16px; margin: 8px 0; font-size: 13px; color: #3a5a32; }
-        .tips-box { background: #fdf6f0; border: 1px solid #f0d8b8; border-radius: 10px; padding: 10px 14px; margin: 8px 0; font-size: 13px; color: #8a6a4a; }
+        .content-body { line-height: 1.8; font-size: 13px; color: #333; }
+        .content-body h3 { font-size: 15px; font-weight: 700; color: #1b4332; margin: 18px 0 10px; padding-bottom: 6px; border-bottom: 1px solid #eee; }
+        .content-body h4 { font-size: 13px; font-weight: 700; color: #555; margin: 14px 0 8px; }
+        .content-body strong { color: #1b4332; }
+        .content-body p { margin: 5px 0; }
+        .scene-desc { background: #faf9f6; border-left: 3px solid #d4c9a8; padding: 12px 16px; border-radius: 0 10px 10px 0; margin: 8px 0; font-size: 12px; color: #5a4a3a; }
+        .storyboard-item { background: #fafaf8; border-radius: 10px; padding: 10px 14px; margin: 8px 0; border: 1px solid #e8e6e1; }
+        .video-prompt-box { background: #f7f9f6; border: 1px solid #d5e0d8; border-radius: 10px; padding: 12px 16px; margin: 8px 0; font-size: 12px; color: #3a5a32; }
+        .tips-box { background: #fdf9f3; border: 1px solid #eadcc8; border-radius: 10px; padding: 10px 14px; margin: 8px 0; font-size: 12px; color: #7a6048; }
 
-        .error-msg { background: #fff0f0; border: 1px solid #f5c6c6; color: #c0392b; padding: 14px 18px; border-radius: 12px; margin-bottom: 16px; display: none; }
+        .error-msg { background: #fef5f5; border: 1px solid #f5cece; color: #b83a4a; padding: 14px 18px; border-radius: 12px; margin-bottom: 16px; display: none; font-size: 13px; }
         .error-msg.active { display: block; }
         .toast {
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            background: #2d5a27; color: #fff; padding: 12px 28px; border-radius: 10px;
-            font-weight: 700; font-size: 14px; z-index: 999; opacity: 0;
-            transition: opacity 0.3s; pointer-events: none; box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            position: fixed; top: 24px; left: 50%; transform: translateX(-50%);
+            background: #1a1a2e; color: #fff; padding: 12px 28px; border-radius: 12px;
+            font-weight: 600; font-size: 13px; z-index: 999; opacity: 0;
+            transition: opacity 0.25s; pointer-events: none; box-shadow: 0 8px 30px rgba(0,0,0,0.2);
         }
         .toast.show { opacity: 1; }
-        .footer { text-align: center; color: #bbb; font-size: 12px; padding: 20px; }
-        .empty-state { text-align: center; padding: 40px; color: #ccc; font-size: 14px; }
+        .footer { text-align: center; color: #c0c0c0; font-size: 11px; padding: 24px; }
+        .empty-state { text-align: center; padding: 48px; color: #ccc; font-size: 13px; }
 
         /* 编辑弹窗 */
         .modal-overlay {
@@ -272,8 +276,9 @@
         <div class="toolbar">
             <span style="font-weight:700;color:#2d5a27;margin-right:8px;align-self:center;" id="resultTitle"></span>
             <button class="btn btn-outline btn-sm" onclick="doRegenerate()">🔄 重新生成</button>
-            <button class="btn btn-outline btn-sm" onclick="doCopyVideo(1)">📋 复制视频1</button>
-            <button class="btn btn-outline btn-sm" onclick="doCopyVideo(2)">📋 复制视频2</button>
+            <button class="btn btn-outline btn-sm" onclick="doCopyScene()">🖼 复制场景图</button>
+            <button class="btn btn-outline btn-sm" onclick="doCopyCharacters()">👥 复制角色</button>
+            <button class="btn btn-outline btn-sm" onclick="doCopyAll()">📋 复制全部</button>
             <button class="btn btn-outline btn-sm" onclick="doSaveScript()">💾 保存到剧集</button>
         </div>
 
@@ -283,34 +288,24 @@
             <div class="content-body" id="charactersContent"></div>
         </div>
 
-        <!-- 🎬 视频1 -->
-        <div class="section-card" id="video1Section">
+        <!-- 🎬 剧情段（0-15秒） -->
+        <div class="section-card" id="part1Section">
             <div class="section-header">
-                <span class="section-title">🎬 视频1（15秒）</span>
-                <div class="optimize-row">
-                    <input type="text" id="video1Keywords" placeholder="优化关键字">
-                    <button class="btn btn-outline btn-sm" onclick="doOptimize('video1')">优化视频1</button>
-                </div>
+                <span class="section-title">🎬 剧情段（0-15秒）</span>
+                <button class="btn btn-outline btn-sm" onclick="doCopyPart(1)">📋 复制剧情段</button>
             </div>
-            <div class="content-body" id="video1Content"></div>
+            <div class="content-body" id="part1Content"></div>
         </div>
 
-        <!-- 🎬 视频2 -->
-        <div class="section-card" id="video2Section">
+        <!-- 📢 互动段（15-20秒） -->
+        <div class="section-card" id="part2Section">
             <div class="section-header">
-                <span class="section-title">🎬 视频2（15秒）</span>
-                <div class="optimize-row">
-                    <input type="text" id="video2Keywords" placeholder="优化关键字">
-                    <button class="btn btn-outline btn-sm" onclick="doOptimize('video2')">优化视频2</button>
-                </div>
+                <span class="section-title">📢 互动段（15-20秒）</span>
+                <button class="btn btn-outline btn-sm" onclick="doCopyPart(2)">📋 复制互动段</button>
             </div>
-            <div class="content-body" id="video2Content"></div>
+            <div class="content-body" id="part2Content"></div>
         </div>
 
-        <div class="section-card" id="tipsSection" style="display:none;">
-            <div class="section-header"><span class="section-title">💡 制作提示</span></div>
-            <div class="content-body" id="tipsContent"></div>
-        </div>
     </div>
 </div>
 
@@ -347,16 +342,51 @@ function setLoading(v) { document.getElementById('loading').classList.toggle('ac
 
 // ========== Markdown 解析 ==========
 function parseContent(md) {
-    const sections = { characters: '', video1: '', video2: '', tips: '' };
+    const sections = { characters: '', part1: '', part2: '' };
+
+    // Helper: extract sub-section between two markers
+    function extractBetween(text, start, end) {
+        const m = text.match(new RegExp(start + '[\\s\\S]*?(?=' + end + '|$)'));
+        return m ? m[0].trim() : '';
+    }
+
+    // Extract top-level sections
     let cur = null, buf = [];
+    const raw = { characters: '', scene: '', script: '', prompt: '', audio: '' };
     for (const line of md.split('\n')) {
-        if (line.match(/^###?\s*(👥|出场角色)/)) { if(cur) sections[cur]=buf.join('\n').trim(); cur='characters'; buf=[]; continue; }
-        if (line.match(/^###?\s*🎬\s*视频1/)) { if(cur) sections[cur]=buf.join('\n').trim(); cur='video1'; buf=[]; continue; }
-        if (line.match(/^###?\s*🎬\s*视频2/)) { if(cur) sections[cur]=buf.join('\n').trim(); cur='video2'; buf=[]; continue; }
-        if (line.match(/^###?\s*(💡|制作提示)/)) { if(cur) sections[cur]=buf.join('\n').trim(); cur='tips'; buf=[]; continue; }
+        if (line.match(/^###?\s*(👥|出场角色)/)) { if(cur) raw[cur]=buf.join('\n').trim(); cur='characters'; buf=[]; continue; }
+        if (line.match(/^###?\s*🎬\s*场景图/)) { if(cur) raw[cur]=buf.join('\n').trim(); cur='scene'; buf=[]; continue; }
+        if (line.match(/^###?\s*📝\s*分镜/)) { if(cur) raw[cur]=buf.join('\n').trim(); cur='script'; buf=[]; continue; }
+        if (line.match(/^###?\s*🎥\s*视频生成/)) { if(cur) raw[cur]=buf.join('\n').trim(); cur='prompt'; buf=[]; continue; }
+        if (line.match(/^###?\s*🎵\s*音效/)) { if(cur) raw[cur]=buf.join('\n').trim(); cur='audio'; buf=[]; continue; }
         buf.push(line);
     }
-    if(cur) sections[cur]=buf.join('\n').trim();
+    if(cur) raw[cur]=buf.join('\n').trim();
+
+    sections.characters = raw.characters;
+
+    // Build part1 (0-15s) and part2 (15-20s) from sub-sections
+    function scene1() { return extractBetween(raw.scene, '\\*\\*剧情场景', '\\*\\*互动场景'); }
+    function scene2() { return extractBetween(raw.scene, '\\*\\*互动场景', '$'); }
+    function script1() { return extractBetween(raw.script, '分镜1', '分镜4'); }
+    function script2() { return extractBetween(raw.script, '分镜4', '$'); }
+
+    let p1 = '';
+    if(scene1()) p1 += '## 场景图\n' + scene1() + '\n\n';
+    if(script1()) p1 += '## 分镜脚本\n' + script1() + '\n\n';
+    // Audio for part1
+    const audio1 = extractBetween(raw.audio, '0-15秒', '15-20秒');
+    if(audio1) p1 += '## 音效\n' + audio1;
+    sections.part1 = p1.trim();
+
+    let p2 = '';
+    if(scene2()) p2 += '## 场景图\n' + scene2() + '\n\n';
+    if(script2()) p2 += '## 分镜脚本\n' + script2() + '\n\n';
+    // Audio for part2
+    const audio2 = extractBetween(raw.audio, '15-20秒', '$');
+    if(audio2) p2 += '## 音效\n' + audio2;
+    sections.part2 = p2.trim();
+
     return sections;
 }
 
@@ -374,11 +404,8 @@ function displayResult(content) {
     const charEl = document.getElementById('charactersSection');
     if(s.characters) { document.getElementById('charactersContent').innerHTML = renderMarkdown(s.characters); charEl.style.display='block'; }
     else charEl.style.display='none';
-    document.getElementById('video1Content').innerHTML = renderMarkdown(s.video1);
-    document.getElementById('video2Content').innerHTML = renderMarkdown(s.video2);
-    const tipsEl = document.getElementById('tipsSection');
-    if(s.tips) { document.getElementById('tipsContent').innerHTML = renderMarkdown(s.tips); tipsEl.style.display='block'; }
-    else tipsEl.style.display='none';
+    document.getElementById('part1Content').innerHTML = renderMarkdown(s.part1);
+    document.getElementById('part2Content').innerHTML = renderMarkdown(s.part2);
     document.getElementById('resultArea').classList.add('active');
     document.getElementById('resultTitle').textContent = '📋 ' + (currentTopic.length > 30 ? currentTopic.slice(0,30)+'…' : currentTopic);
     document.getElementById('resultArea').scrollIntoView({behavior:'smooth',block:'start'});
@@ -426,27 +453,38 @@ async function doRegenerate() {
     finally { setLoading(false); }
 }
 
-// ========== 复制视频1/视频2 ==========
-function doCopyVideo(videoNum) {
+// ========== 复制场景图 ==========
+function doCopyScene() {
     if(!currentContent) return;
-    const parts = splitByVideo(currentContent);
-    const content = parts[videoNum] || '';
-    if(!content.trim()) {
-        showError('未能识别视频'+videoNum+'的内容，请检查剧本格式');
-        return;
-    }
-    navigator.clipboard.writeText(content).then(
-        ()=>toast('📋 视频'+videoNum+'内容已复制！')
-    ).catch(()=>showError('复制失败'));
+    const raw = parseContent(currentContent);
+    const s = raw.part1.match(/## 场景图\n([\s\S]*?)(?=\n##|$)/);
+    const text = s ? s[1].trim() : '';
+    if(!text) { showError('未找到场景图提示词'); return; }
+    navigator.clipboard.writeText(text).then(()=>toast('🖼 场景图已复制！')).catch(()=>showError('复制失败'));
 }
 
-function splitByVideo(md) {
-    // 新版格式：视频1和视频2各自独立，直接按 ### 🎬 视频 分割
-    const result = { 1: '', 2: '' };
-    const parts = md.split(/^###\s*🎬\s*视频/m);
-    if(parts.length > 1) result[1] = ('### 🎬 视频' + parts[1]).trim();
-    if(parts.length > 2) result[2] = ('### 🎬 视频' + parts[2].replace(/^###\s*💡[\s\S]*$/, '')).trim();
-    return result;
+// ========== 复制角色 ==========
+function doCopyCharacters() {
+    if(!currentContent) return;
+    const parts = parseContent(currentContent);
+    if(!parts.characters) { showError('未找到出场角色信息'); return; }
+    navigator.clipboard.writeText(parts.characters).then(()=>toast('👥 角色信息已复制！')).catch(()=>showError('复制失败'));
+}
+
+// ========== 复制全部 ==========
+function doCopyAll() {
+    if(!currentContent) return;
+    navigator.clipboard.writeText(currentContent).then(()=>toast('📋 全部已复制！')).catch(()=>showError('复制失败'));
+}
+
+// ========== 复制独立段 ==========
+function doCopyPart(num) {
+    if(!currentContent) return;
+    const parts = parseContent(currentContent);
+    const content = num === 1 ? parts.part1 : parts.part2;
+    if(!content.trim()) { showError('未找到该段内容'); return; }
+    const label = num === 1 ? '剧情段' : '互动段';
+    navigator.clipboard.writeText(content).then(()=>toast('📋 '+label+'已复制！')).catch(()=>showError('复制失败'));
 }
 
 // ========== 保存剧本到剧集 ==========
@@ -668,11 +706,6 @@ async function saveEdit() {
 
 // ========== 键盘事件 ==========
 document.getElementById('topicInput').addEventListener('keydown', e => { if(e.key==='Enter') doGenerate(); });
-['video1Keywords','video2Keywords'].forEach(id => {
-    document.getElementById(id).addEventListener('keydown', e => {
-        if(e.key==='Enter') doOptimize(id.replace('Keywords',''));
-    });
-});
 
 // ========== 初始化 ==========
 loadEpisodes();
