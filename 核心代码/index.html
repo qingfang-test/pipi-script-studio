@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐷 皮皮剧本工坊</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f3f2ef;
+            color: #1a1a2e;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+        .navbar {
+            background: #1b4332;
+            padding: 18px 36px;
+            display: flex; align-items: center; gap: 14px;
+            box-shadow: 0 1px 0 rgba(255,255,255,0.08) inset, 0 4px 20px rgba(0,0,0,0.15);
+        }
+        .navbar .logo { font-size: 26px; }
+        .navbar h1 { color: #fff; font-size: 20px; font-weight: 600; letter-spacing: 1px; }
+        .navbar .subtitle { color: rgba(255,255,255,0.65); font-size: 12px; margin-left: auto; font-weight: 400; }
+        .container { max-width: 880px; margin: 0 auto; padding: 32px 20px 80px; }
+
+        /* Card */
+        .card {
+            background: #fff; border-radius: 20px; padding: 32px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
+            margin-bottom: 20px; border: 1px solid #e8e6e1;
+        }
+        .card h2 { font-size: 16px; font-weight: 700; color: #1b4332; margin-bottom: 18px; letter-spacing: 0.3px; }
+
+        /* 输入区 */
+        .input-row { display: flex; gap: 10px; }
+        .input-row input {
+            flex: 1; padding: 14px 18px; border: 1.5px solid #e0ded8;
+            border-radius: 14px; font-size: 15px; font-family: inherit; outline: none;
+            background: #fafaf8; transition: all 0.2s;
+        }
+        .input-row input:focus { border-color: #2d6a4f; background: #fff; box-shadow: 0 0 0 3px rgba(45,106,79,0.08); }
+        .hint { font-size: 12px; color: #a0a0a0; margin-bottom: 14px; }
+        .hint em { color: #2d6a4f; font-style: normal; font-weight: 600; }
+
+        /* 按钮 */
+        .btn {
+            padding: 13px 26px; border: none; border-radius: 14px;
+            font-size: 14px; font-weight: 600; font-family: inherit;
+            cursor: pointer; transition: all 0.2s; white-space: nowrap; letter-spacing: 0.2px;
+        }
+        .btn:active { transform: scale(0.97); }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; filter: grayscale(0.5); }
+        .btn-primary {
+            background: #1b4332; color: #fff;
+            box-shadow: 0 2px 8px rgba(27,67,50,0.2);
+        }
+        .btn-primary:hover { background: #1f5c44; box-shadow: 0 4px 14px rgba(27,67,50,0.3); }
+        .btn-outline {
+            background: #fff; color: #1b4332; border: 1.5px solid #c5d5cc;
+        }
+        .btn-outline:hover { background: #f4f7f5; border-color: #1b4332; }
+        .btn-sm { padding: 7px 14px; font-size: 12px; border-radius: 10px; }
+        .btn-xs { padding: 5px 11px; font-size: 11px; border-radius: 8px; }
+        .btn-gold {
+            background: #f5a623; color: #fff; border: none;
+            box-shadow: 0 2px 8px rgba(245,166,35,0.2); font-weight: 700;
+        }
+        .btn-gold:hover { background: #f7b733; box-shadow: 0 4px 16px rgba(245,166,35,0.35); }
+
+        /* 加载 */
+        .loading { display: none; text-align: center; padding: 40px; color: #a0a0a0; }
+        .loading.active { display: block; }
+        .spinner {
+            width: 32px; height: 32px; border: 2.5px solid #e8e6e1;
+            border-top: 2.5px solid #1b4332; border-radius: 50%;
+            animation: spin 0.7s linear infinite; margin: 0 auto 14px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* 灵感卡片 */
+        .ideas-grid { display: grid; gap: 8px; margin-top: 14px; }
+        .idea-card {
+            background: #fafaf8; border: 1px solid #e8e6e1;
+            border-radius: 12px; padding: 14px 18px;
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 12px; transition: all 0.2s;
+        }
+        .idea-card:hover { border-color: #d4c9a8; background: #fdfcf6; }
+        .idea-card .idea-text { flex: 1; font-size: 13px; line-height: 1.65; color: #333; }
+        .idea-card .idea-actions { display: flex; gap: 6px; align-items: center; }
+        .idea-card .type-badge {
+            font-size: 10px; padding: 3px 9px; border-radius: 20px;
+            font-weight: 600; white-space: nowrap; letter-spacing: 0.3px;
+        }
+        .badge-edu { background: #e8f0eb; color: #1b4332; }
+        .badge-fun { background: #fef3e4; color: #c26d1a; }
+        .badge-warm { background: #fde8ec; color: #b83a4a; }
+        .badge-creative { background: #e6eef6; color: #2c5282; }
+
+        /* 剧集列表 */
+        .episode-list { margin-top: 6px; }
+        .episode-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 18px; border-radius: 12px; margin-bottom: 6px;
+            border: 1px solid #e8e6e1; background: #fafaf8;
+            transition: all 0.15s; cursor: pointer; gap: 12px;
+        }
+        .episode-item:hover { background: #f4f7f5; border-color: #c5d5cc; }
+        .episode-item .ep-num {
+            font-weight: 700; font-size: 16px; color: #2d6a4f;
+            min-width: 44px; text-align: center;
+        }
+        .episode-item .ep-info { flex: 1; }
+        .episode-item .ep-title { font-weight: 600; font-size: 14px; color: #1a1a2e; }
+        .episode-item .ep-topic { font-size: 12px; color: #aaa; margin-top: 2px; }
+        .episode-item .ep-status {
+            font-size: 10px; padding: 3px 9px; border-radius: 20px; font-weight: 600; letter-spacing: 0.3px;
+        }
+        .status-draft { background: #fef3e4; color: #c26d1a; }
+        .status-completed { background: #e8f0eb; color: #1b4332; }
+        .episode-item .ep-delete {
+            color: #ccc; background: none; border: none; cursor: pointer;
+            font-size: 15px; padding: 4px 8px; border-radius: 6px; transition: 0.15s;
+        }
+        .episode-item .ep-delete:hover { color: #d14343; background: #fef0f0; }
+        .episode-item .ep-edit {
+            color: #2d6a4f; background: none; border: none; cursor: pointer;
+            font-size: 13px; padding: 4px 8px; border-radius: 6px; transition: 0.15s;
+            text-decoration: none;
+        }
+        .episode-item .ep-edit:hover { background: #e8f0eb; }
+
+        /* 分页 */
+        .pagination { display: flex; gap: 5px; justify-content: center; margin-top: 18px; align-items: center; }
+        .pagination button {
+            padding: 6px 14px; border: 1px solid #e0ded8; background: #fff;
+            border-radius: 10px; cursor: pointer; font-family: inherit; font-size: 12px; font-weight: 500;
+            transition: all 0.15s; color: #555;
+        }
+        .pagination button:hover { border-color: #2d6a4f; color: #2d6a4f; }
+        .pagination button.active { background: #2d6a4f; color: #fff; border-color: #2d6a4f; }
+        .pagination button:disabled { opacity: 0.35; cursor: not-allowed; }
+        .pagination .page-info { font-size: 12px; color: #aaa; padding: 0 6px; }
+
+        /* 结果区 */
+        .result-area { display: none; }
+        .result-area.active { display: block; }
+        .toolbar { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+        .section-card {
+            background: #fff; border-radius: 20px; padding: 28px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04);
+            margin-bottom: 14px; position: relative; border: 1px solid #e8e6e1;
+        }
+        .section-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 18px; flex-wrap: wrap; gap: 10px;
+        }
+        .section-title { font-weight: 700; font-size: 15px; color: #1a1a2e; }
+        .optimize-row { display: flex; gap: 8px; align-items: center; }
+        .optimize-row input {
+            padding: 7px 12px; border: 1.5px solid #e0ded8;
+            border-radius: 10px; font-size: 12px; font-family: inherit; width: 170px; outline: none;
+            background: #fafaf8; transition: all 0.2s;
+        }
+        .optimize-row input:focus { border-color: #2d6a4f; background: #fff; }
+
+        /* Markdown 内容 */
+        .content-body { line-height: 1.8; font-size: 13px; color: #333; }
+        .content-body h3 { font-size: 15px; font-weight: 700; color: #1b4332; margin: 18px 0 10px; padding-bottom: 6px; border-bottom: 1px solid #eee; }
+        .content-body h4 { font-size: 13px; font-weight: 700; color: #555; margin: 14px 0 8px; }
+        .content-body strong { color: #1b4332; }
+        .content-body p { margin: 5px 0; }
+        .scene-desc { background: #faf9f6; border-left: 3px solid #d4c9a8; padding: 12px 16px; border-radius: 0 10px 10px 0; margin: 8px 0; font-size: 12px; color: #5a4a3a; }
+        .storyboard-item { background: #fafaf8; border-radius: 10px; padding: 10px 14px; margin: 8px 0; border: 1px solid #e8e6e1; }
+        .video-prompt-box { background: #f7f9f6; border: 1px solid #d5e0d8; border-radius: 10px; padding: 12px 16px; margin: 8px 0; font-size: 12px; color: #3a5a32; }
+        .tips-box { background: #fdf9f3; border: 1px solid #eadcc8; border-radius: 10px; padding: 10px 14px; margin: 8px 0; font-size: 12px; color: #7a6048; }
+
+        .error-msg { background: #fef5f5; border: 1px solid #f5cece; color: #b83a4a; padding: 14px 18px; border-radius: 12px; margin-bottom: 16px; display: none; font-size: 13px; }
+        .error-msg.active { display: block; }
+        .toast {
+            position: fixed; top: 24px; left: 50%; transform: translateX(-50%);
+            background: #1a1a2e; color: #fff; padding: 12px 28px; border-radius: 12px;
+            font-weight: 600; font-size: 13px; z-index: 999; opacity: 0;
+            transition: opacity 0.25s; pointer-events: none; box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+        }
+        .toast.show { opacity: 1; }
+        .footer { text-align: center; color: #c0c0c0; font-size: 11px; padding: 24px; }
+        .empty-state { text-align: center; padding: 48px; color: #ccc; font-size: 13px; }
+
+        /* 编辑弹窗 */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+            background: #fff; border-radius: 16px; padding: 28px; width: 90%; max-width: 800px;
+            max-height: 85vh; display: flex; flex-direction: column; box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+        }
+        .modal-box h3 { font-size: 18px; font-weight: 900; color: #2d5a27; margin-bottom: 16px; }
+        .modal-box textarea {
+            flex: 1; min-height: 300px; border: 2px solid #e0d8cf; border-radius: 12px;
+            padding: 14px; font-family: 'Noto Sans SC', monospace; font-size: 13px;
+            line-height: 1.6; resize: vertical; outline: none;
+        }
+        .modal-box textarea:focus { border-color: #3a7d32; }
+        .modal-actions { display: flex; gap: 10px; margin-top: 16px; justify-content: flex-end; }
+
+        @media (max-width: 640px) {
+            .input-row { flex-direction: column; }
+            .optimize-row input { width: 120px; }
+            .section-header { flex-direction: column; align-items: flex-start; }
+            .ideas-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <span class="logo">🐷</span>
+    <h1>皮皮剧本工坊</h1>
+    <span class="subtitle">一句话梗概 → 完整剧本</span>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<div class="container">
+
+    <!-- ========== 输入区域 ========== -->
+    <div class="card">
+        <h2>📝 输入一句话梗概</h2>
+        <div class="hint">例：<em>皮皮把客厅搞得一团糟，猪妈妈回来前要紧急收拾</em></div>
+        <div class="input-row">
+            <input type="text" id="topicInput" placeholder="在这里输入你的创意梗概…" maxlength="200">
+            <button class="btn btn-primary" id="btnGenerate" onclick="doGenerate()">✨ 生成剧本</button>
+        </div>
+    </div>
+
+    <!-- ========== 灵感生成器 ========== -->
+    <div class="card">
+        <h2>💡 灵感生成器</h2>
+        <p style="font-size:13px;color:#999;margin-bottom:14px;">随机生成有趣、健康、有教育意义的创意梗概，选中后自动加入剧集列表</p>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <button class="btn btn-gold" id="btnIdeas" onclick="doGenerateIdeas()">🎲 帮我设计5个梗概</button>
+            <button class="btn btn-outline btn-sm" id="btnReIdeas" style="display:none;" onclick="doGenerateIdeas()">🔄 换一批</button>
+        </div>
+        <div style="margin-top:4px;">
+            <span id="ideasLoading" style="display:none;font-size:13px;color:#999;">正在生成灵感…</span>
+            <span id="ideasError" style="display:none;font-size:13px;color:#e53935;"></span>
+        </div>
+        <div class="ideas-grid" id="ideasGrid"></div>
+    </div>
+
+    <!-- ========== 我的剧集 ========== -->
+    <div class="card">
+        <h2>📺 我的剧集 <span id="epCount" style="font-weight:400;font-size:13px;color:#999;"></span></h2>
+        <div class="episode-list" id="episodeList">
+            <div class="empty-state">还没有剧集，用上方灵感生成器或手动输入梗概开始吧！</div>
+        </div>
+        <div class="pagination" id="pagination" style="display:none;"></div>
+    </div>
+
+    <!-- ========== 加载动画 ========== -->
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>正在生成剧本，请稍候…</p>
+    </div>
+
+    <!-- ========== 错误提示 ========== -->
+    <div class="error-msg" id="errorMsg"></div>
+
+    <!-- ========== 结果区域 ========== -->
+    <div class="result-area" id="resultArea">
+        <div class="toolbar">
+            <span style="font-weight:700;color:#2d5a27;margin-right:8px;align-self:center;" id="resultTitle"></span>
+            <button class="btn btn-outline btn-sm" onclick="doRegenerate()">🔄 重新生成</button>
+            <button class="btn btn-outline btn-sm" onclick="doCopyScene()">🖼 复制场景图</button>
+            <button class="btn btn-outline btn-sm" onclick="doCopyCharacters()">👥 复制角色</button>
+            <button class="btn btn-outline btn-sm" onclick="doCopyAll()">📋 复制全部</button>
+            <button class="btn btn-outline btn-sm" onclick="doSaveScript()">💾 保存到剧集</button>
+        </div>
+
+        <!-- 👥 出场角色 -->
+        <div class="section-card" id="charactersSection" style="display:none;">
+            <div class="section-header"><span class="section-title">👥 出场角色</span></div>
+            <div class="content-body" id="charactersContent"></div>
+        </div>
+
+        <!-- 🎬 剧情段（0-15秒） -->
+        <div class="section-card" id="part1Section">
+            <div class="section-header">
+                <span class="section-title">🎬 剧情段（0-15秒）</span>
+                <button class="btn btn-outline btn-sm" onclick="doCopyPart(1)">📋 复制剧情段</button>
+            </div>
+            <div class="content-body" id="part1Content"></div>
+        </div>
+
+        <!-- 📢 互动段（15-20秒） -->
+        <div class="section-card" id="part2Section">
+            <div class="section-header">
+                <span class="section-title">📢 互动段（15-20秒）</span>
+                <button class="btn btn-outline btn-sm" onclick="doCopyPart(2)">📋 复制互动段</button>
+            </div>
+            <div class="content-body" id="part2Content"></div>
+        </div>
+
+    </div>
+</div>
+
+<!-- 编辑弹窗 -->
+<div class="modal-overlay" id="editModal" onclick="if(event.target===this)closeEditModal()">
+    <div class="modal-box">
+        <h3>✏️ 编辑剧本 — <span id="editEpTitle"></span></h3>
+        <textarea id="editTextarea" placeholder="在此编辑剧本内容（Markdown格式）…"></textarea>
+        <div class="modal-actions">
+            <button class="btn btn-outline btn-sm" onclick="closeEditModal()">取消</button>
+            <button class="btn btn-primary btn-sm" onclick="saveEdit()">💾 保存修改</button>
+        </div>
+    </div>
+</div>
+
+<div class="footer">🐷 皮皮剧本工坊 · 即梦AI短视频专用 · Powered by DeepSeek</div>
+
+<script>
+// ========== 全局状态 ==========
+let currentTopic = '';
+let currentContent = '';
+let currentEpisodeId = null;
+let currentPage = 1;
+
+// ========== 工具 ==========
+function toast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+}
+function showError(msg) { const e = document.getElementById('errorMsg'); e.textContent = '⚠ ' + msg; e.classList.add('active'); }
+function hideError() { document.getElementById('errorMsg').classList.remove('active'); }
+function setLoading(v) { document.getElementById('loading').classList.toggle('active', v); document.getElementById('btnGenerate').disabled = v; }
+
+// ========== Markdown 解析 ==========
+function parseContent(md) {
+    const sections = { characters: '', part1: '', part2: '' };
+
+    // Helper: extract sub-section between two markers
+    function extractBetween(text, start, end) {
+        const m = text.match(new RegExp(start + '[\\s\\S]*?(?=' + end + '|$)'));
+        return m ? m[0].trim() : '';
+    }
+
+    // Extract top-level sections
+    let cur = null, buf = [];
+    const raw = { characters: '', scene: '', script: '', prompt: '', audio: '' };
+    for (const line of md.split('\n')) {
+        if (line.match(/^###?\s*(👥|出场角色)/)) { if(cur) raw[cur]=buf.join('\n').trim(); cur='characters'; buf=[]; continue; }
+        if (line.match(/^###?\s*🎬\s*场景图/)) { if(cur) raw[cur]=buf.join('\n').trim(); cur='scene'; buf=[]; continue; }
+        if (line.match(/^###?\s*📝\s*分镜/)) { if(cur) raw[cur]=buf.join('\n').trim(); cur='script'; buf=[]; continue; }
+        if (line.match(/^###?\s*🎥\s*视频生成/)) { if(cur) raw[cur]=buf.join('\n').trim(); cur='prompt'; buf=[]; continue; }
+        if (line.match(/^###?\s*🎵\s*音效/)) { if(cur) raw[cur]=buf.join('\n').trim(); cur='audio'; buf=[]; continue; }
+        buf.push(line);
+    }
+    if(cur) raw[cur]=buf.join('\n').trim();
+
+    sections.characters = raw.characters;
+
+    // Build part1 (0-15s) and part2 (15-20s) from sub-sections
+    function scene1() { return extractBetween(raw.scene, '\\*\\*剧情场景', '\\*\\*互动场景'); }
+    function scene2() { return extractBetween(raw.scene, '\\*\\*互动场景', '$'); }
+    function script1() { return extractBetween(raw.script, '分镜1', '分镜4'); }
+    function script2() { return extractBetween(raw.script, '分镜4', '$'); }
+
+    let p1 = '';
+    if(scene1()) p1 += '## 场景图\n' + scene1() + '\n\n';
+    if(script1()) p1 += '## 分镜脚本\n' + script1() + '\n\n';
+    // Audio for part1
+    const audio1 = extractBetween(raw.audio, '0-15秒', '15-20秒');
+    if(audio1) p1 += '## 音效\n' + audio1;
+    sections.part1 = p1.trim();
+
+    let p2 = '';
+    if(scene2()) p2 += '## 场景图\n' + scene2() + '\n\n';
+    if(script2()) p2 += '## 分镜脚本\n' + script2() + '\n\n';
+    // Audio for part2
+    const audio2 = extractBetween(raw.audio, '15-20秒', '$');
+    if(audio2) p2 += '## 音效\n' + audio2;
+    sections.part2 = p2.trim();
+
+    return sections;
+}
+
+function renderMarkdown(md) {
+    if(!md) return '';
+    let h = md.replace(/^#### (.+)$/gm, '<h4>$1</h4>').replace(/^### (.+)$/gm, '<h3>$1</h3>');
+    h = h.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    h = h.replace(/^(?!<[hdiv])(.+)$/gm, '<p>$1</p>').replace(/<p>\s*<\/p>/g, '');
+    return h;
+}
+
+function displayResult(content) {
+    currentContent = content; hideError();
+    const s = parseContent(content);
+    const charEl = document.getElementById('charactersSection');
+    if(s.characters) { document.getElementById('charactersContent').innerHTML = renderMarkdown(s.characters); charEl.style.display='block'; }
+    else charEl.style.display='none';
+    document.getElementById('part1Content').innerHTML = renderMarkdown(s.part1);
+    document.getElementById('part2Content').innerHTML = renderMarkdown(s.part2);
+    document.getElementById('resultArea').classList.add('active');
+    document.getElementById('resultTitle').textContent = '📋 ' + (currentTopic.length > 30 ? currentTopic.slice(0,30)+'…' : currentTopic);
+    document.getElementById('resultArea').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ========== 剧本生成 ==========
+async function doGenerate(topic) {
+    const t = topic || document.getElementById('topicInput').value.trim();
+    if(!t) { showError('请先输入一句话梗概'); return; }
+    currentTopic = t; hideError(); setLoading(true);
+    try {
+        const r = await fetch('/api/generate', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({topic:t})});
+        const d = await r.json();
+        if(d.ok) { displayResult(d.content); toast('✅ 剧本生成完成！'); }
+        else showError(d.error||'生成失败');
+    } catch(e) { showError('网络请求失败：'+e.message); }
+    finally { setLoading(false); }
+}
+
+// ========== 优化 ==========
+async function doOptimize(section) {
+    if(!currentContent) { showError('请先生成剧本'); return; }
+    const kw = document.getElementById(section+'Keywords').value.trim();
+    if(!kw) { showError('请输入优化关键字'); return; }
+    hideError(); setLoading(true);
+    try {
+        const r = await fetch('/api/optimize', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({content:currentContent,section,keywords:kw})});
+        const d = await r.json();
+        if(d.ok) { displayResult(d.content); document.getElementById(section+'Keywords').value=''; toast('✅ 优化完成！'); }
+        else showError(d.error||'优化失败');
+    } catch(e) { showError('网络请求失败：'+e.message); }
+    finally { setLoading(false); }
+}
+
+// ========== 重新生成 ==========
+async function doRegenerate() {
+    if(!currentTopic) { showError('没有可重新生成的梗概'); return; }
+    hideError(); setLoading(true);
+    try {
+        const r = await fetch('/api/regenerate', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({topic:currentTopic,previous:currentContent})});
+        const d = await r.json();
+        if(d.ok) { displayResult(d.content); toast('🔄 已重新生成新版本！'); }
+        else showError(d.error||'重新生成失败');
+    } catch(e) { showError('网络请求失败：'+e.message); }
+    finally { setLoading(false); }
+}
+
+// ========== 复制场景图 ==========
+function doCopyScene() {
+    if(!currentContent) return;
+    const raw = parseContent(currentContent);
+    const s = raw.part1.match(/## 场景图\n([\s\S]*?)(?=\n##|$)/);
+    const text = s ? s[1].trim() : '';
+    if(!text) { showError('未找到场景图提示词'); return; }
+    navigator.clipboard.writeText(text).then(()=>toast('🖼 场景图已复制！')).catch(()=>showError('复制失败'));
+}
+
+// ========== 复制角色 ==========
+function doCopyCharacters() {
+    if(!currentContent) return;
+    const parts = parseContent(currentContent);
+    if(!parts.characters) { showError('未找到出场角色信息'); return; }
+    navigator.clipboard.writeText(parts.characters).then(()=>toast('👥 角色信息已复制！')).catch(()=>showError('复制失败'));
+}
+
+// ========== 复制全部 ==========
+function doCopyAll() {
+    if(!currentContent) return;
+    navigator.clipboard.writeText(currentContent).then(()=>toast('📋 全部已复制！')).catch(()=>showError('复制失败'));
+}
+
+// ========== 复制独立段 ==========
+function doCopyPart(num) {
+    if(!currentContent) return;
+    const parts = parseContent(currentContent);
+    const content = num === 1 ? parts.part1 : parts.part2;
+    if(!content.trim()) { showError('未找到该段内容'); return; }
+    const label = num === 1 ? '剧情段' : '互动段';
+    navigator.clipboard.writeText(content).then(()=>toast('📋 '+label+'已复制！')).catch(()=>showError('复制失败'));
+}
+
+// ========== 保存剧本到剧集 ==========
+async function doSaveScript() {
+    if(!currentContent || !currentTopic) {
+        showError('请先生成剧本再保存');
+        return;
+    }
+    hideError();
+
+    const title = currentTopic.length > 20 ? currentTopic.slice(0,20) : currentTopic;
+
+    // 如果已有剧集 ID（从列表点进来的），更新现有剧集；否则创建新剧集
+    if(currentEpisodeId) {
+        try {
+            const r = await fetch('/api/episodes/save_script', {
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({episode_id:currentEpisodeId, script_content:currentContent})
+            });
+            const d = await r.json();
+            if(d.ok) {
+                toast('💾 剧本已保存！');
+                loadEpisodes();
+            } else {
+                showError(d.error || '保存失败');
+            }
+        } catch(e) {
+            showError('网络请求失败，请重试');
+        }
+        return;
+    }
+
+    // 没有剧集 ID：创建新剧集 + 保存剧本
+    try {
+        const r = await fetch('/api/episodes/create_with_script', {
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({title, topic:currentTopic, script_content:currentContent})
+        });
+        const d = await r.json();
+        if(d.ok) {
+            currentEpisodeId = d.episode.id;
+            toast('💾 已保存为第 '+d.episode.episode_num+' 集！');
+            loadEpisodes();
+        } else {
+            showError(d.error || '保存失败');
+        }
+    } catch(e) {
+        showError('网络请求失败，请重试');
+    }
+}
+
+// ========== 灵感生成 ==========
+async function doGenerateIdeas() {
+    const btn = document.getElementById('btnIdeas');
+    const loadEl = document.getElementById('ideasLoading');
+    const errEl = document.getElementById('ideasError');
+    btn.disabled = true; loadEl.style.display = 'inline'; errEl.style.display = 'none';
+
+    try {
+        const r = await fetch('/api/ideas/generate', {method:'POST'});
+        const d = await r.json();
+        if(d.ok && d.ideas.length > 0) {
+            renderIdeas(d.ideas);
+        } else {
+            errEl.textContent = d.error || '生成失败，请重试';
+            errEl.style.display = 'inline';
+        }
+    } catch(e) {
+        errEl.textContent = '网络请求失败';
+        errEl.style.display = 'inline';
+    } finally {
+        btn.disabled = false; loadEl.style.display = 'none';
+    }
+}
+
+function renderIdeas(ideas) {
+    const grid = document.getElementById('ideasGrid');
+    const types = ['badge-edu','badge-fun','badge-warm','badge-creative'];
+    grid.innerHTML = ideas.map((idea, i) => `
+        <div class="idea-card">
+            <span class="type-badge ${types[i%4]}">${['益智','趣味','温情','创意'][i%4]}</span>
+            <span class="idea-text">${escapeHtml(idea)}</span>
+            <div class="idea-actions">
+                <button class="btn btn-outline btn-xs" onclick="selectIdea('${escapeAttr(idea)}')">选用</button>
+            </div>
+        </div>
+    `).join('');
+    document.getElementById('btnReIdeas').style.display = 'inline-block';
+}
+
+function escapeHtml(s) { const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+function escapeAttr(s) { return s.replace(/'/g,"\\'").replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+async function selectIdea(topic) {
+    document.getElementById('topicInput').value = topic;
+    currentTopic = topic;
+    currentEpisodeId = null;  // 重置，等保存时再创建剧集
+    toast('✅ 已选中梗概，请点击「生成剧本」');
+}
+
+// ========== 剧集列表 ==========
+async function loadEpisodes(page=1) {
+    currentPage = page;
+    try {
+        const r = await fetch('/api/episodes/list?page='+page+'&per_page=10');
+        const d = await r.json();
+        renderEpisodes(d);
+    } catch(e) { /* silent */ }
+}
+
+function renderEpisodes(data) {
+    const list = document.getElementById('episodeList');
+    const pag = document.getElementById('pagination');
+    const count = document.getElementById('epCount');
+
+    if(data.total === 0) {
+        list.innerHTML = '<div class="empty-state">还没有剧集，用上方灵感生成器或手动输入梗概开始吧！</div>';
+        pag.style.display = 'none';
+        count.textContent = '';
+        return;
+    }
+
+    count.textContent = '（共 '+data.total+' 集）';
+    list.innerHTML = data.episodes.map(ep => `
+        <div class="episode-item" onclick="loadEpisode(${ep.id}, '${escapeAttr(ep.topic)}')">
+            <span class="ep-num">#${ep.episode_num}</span>
+            <div class="ep-info">
+                <div class="ep-title">${escapeHtml(ep.title)}</div>
+                <div class="ep-topic">${escapeHtml(ep.topic)}</div>
+            </div>
+            <span class="ep-status ${ep.status==='completed'?'status-completed':'status-draft'}">${ep.status==='completed'?'已生成':'待生成'}</span>
+            ${ep.status==='completed' ? `<button class="ep-edit" onclick="event.stopPropagation();openEditModal(${ep.id},'${escapeAttr(ep.title)}')" title="编辑">✏️</button>` : ''}
+            <button class="ep-delete" onclick="event.stopPropagation();deleteEpisode(${ep.id})" title="删除">✕</button>
+        </div>
+    `).join('');
+
+    // 分页
+    if(data.total_pages <= 1) { pag.style.display = 'none'; return; }
+    pag.style.display = 'flex';
+    let html = `<button ${data.page<=1?'disabled':''} onclick="loadEpisodes(${data.page-1})">‹ 上一页</button>`;
+    for(let p=1; p<=data.total_pages; p++) {
+        html += `<button class="${p===data.page?'active':''}" onclick="loadEpisodes(${p})">${p}</button>`;
+    }
+    html += `<button ${data.page>=data.total_pages?'disabled':''} onclick="loadEpisodes(${data.page+1})">下一页 ›</button>`;
+    html += `<span class="page-info">${data.page}/${data.total_pages}</span>`;
+    pag.innerHTML = html;
+}
+
+async function loadEpisode(id, topic) {
+    currentEpisodeId = id;
+    currentTopic = topic;
+    document.getElementById('topicInput').value = topic;
+    // 尝试加载已保存的剧本
+    try {
+        const r = await fetch('/api/episodes/' + id);
+        const d = await r.json();
+        if(d.ok && d.episode && d.episode.script_content) {
+            displayResult(d.episode.script_content);
+            toast('📂 已加载第 '+d.episode.episode_num+' 集剧本');
+            return;
+        }
+    } catch(e) {}
+    // 没有保存的剧本，自动生成
+    doGenerate(topic);
+}
+
+async function deleteEpisode(id) {
+    if(!confirm('确定删除这一集吗？')) return;
+    try {
+        const r = await fetch('/api/episodes/'+id, {method:'DELETE'});
+        const d = await r.json();
+        if(d.ok) { toast('🗑 已删除'); loadEpisodes(currentPage); }
+    } catch(e) { showError('删除失败'); }
+}
+
+// ========== 编辑弹窗 ==========
+let editingEpisodeId = null;
+
+async function openEditModal(id, title) {
+    editingEpisodeId = id;
+    document.getElementById('editEpTitle').textContent = title;
+    // 加载已保存的剧本
+    try {
+        const r = await fetch('/api/episodes/' + id);
+        const d = await r.json();
+        if(d.ok && d.episode) {
+            document.getElementById('editTextarea').value = d.episode.script_content || '';
+        }
+    } catch(e) {
+        document.getElementById('editTextarea').value = '';
+    }
+    document.getElementById('editModal').classList.add('active');
+}
+
+function closeEditModal() {
+    document.getElementById('editModal').classList.remove('active');
+    editingEpisodeId = null;
+}
+
+async function saveEdit() {
+    if(!editingEpisodeId) return;
+    const content = document.getElementById('editTextarea').value;
+    try {
+        const r = await fetch('/api/episodes/save_script', {
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({episode_id:editingEpisodeId, script_content:content})
+        });
+        const d = await r.json();
+        if(d.ok) {
+            toast('💾 修改已保存！');
+            closeEditModal();
+            loadEpisodes();
+        } else showError(d.error);
+    } catch(e) { showError('保存失败'); }
+}
+
+// ========== 键盘事件 ==========
+document.getElementById('topicInput').addEventListener('keydown', e => { if(e.key==='Enter') doGenerate(); });
+
+// ========== 初始化 ==========
+loadEpisodes();
+</script>
+</body>
+</html>
